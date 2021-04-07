@@ -8,20 +8,20 @@
  * Implements the Observer design pattern to any object that extends it.
  * It features both observable and observer parts in a single object.
  */
-export default class BaseObervable {
+export default class BaseObservable {
 
     /**
      * each instance of BaseObservable class stats with an
      * empty array of observers that react to state changes
      */
     constructor() {
-        /** @type {BaseObervable[]} */
+        /** @type {BaseObservable[]} */
         this.observers = [];
     }
 
     /**
      * Add an object (an observer) that can listen to BaseObservable notifications.
-     * @param {BaseObervable} component
+     * @param {BaseObservable} component
      */
     addObverser(component) {
         this.observers.push(component);

@@ -4,14 +4,14 @@
  * Licensed under MIT (https://github.com/luclorencini/lorisJS/blob/main/LICENSE)
  */
 
-import BaseObervable from "./BaseObservable.js";
+import BaseObservable from "./BaseObservable.js";
 import { bind } from "./dataBinding.js";
 
 /**
  * **BaseComponent** is the superclass that represents a component.
  * It provides methods for page rendering, action handling and two-way data binding
  */
-export default class BaseComponent extends BaseObervable {
+export default class BaseComponent extends BaseObservable {
 
     /**
      * While creating a BaseComponent object, searches the entire DOM for an element that has 
