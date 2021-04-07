@@ -45,9 +45,14 @@ event: is any valid javascript string event, like click, change, mouseover, and 
 Action work is pretty straightforward: it simply creates a javascript event listener using the event you informed, and calls the components’ method by calling **eval** function. Since it’s a plain vanilla eval in the end, the following calls work:
 
 ```javascript
-// calls the method this.save() on the componentui-action=”click=save()”
-// calls the method this.loadItem on the component, passing the attribute 1 into it.ui-action=”click=loadItem(1)”
-// calls the method this.showPanel() on the component, passing the fired javascript event *e* into it.ui-action=”change=showPanel(e)”
+// calls the method this.save() on the component
+ui-action=”click=save()”
+
+// calls the method this.loadItem on the component, passing the attribute 1 into it.
+ui-action=”click=loadItem(1)”
+
+// calls the method this.showPanel() on the component, passing the fired javascript event *e* into it.
+ui-action=”change=showPanel(e)”
 ```
 
 By default, **setupActions** acts upon the **this.elem** element. However, if you need more fine-grained control over where to look for actions to set up, consider using the **setupActionsIn** method. This complementary method expects an element where the action setup will look for.
@@ -103,9 +108,9 @@ Searches in all DOM elements inside **this.elem** having the **ui-bind** attribu
 
 Searches in all DOM elements inside the informed element having the **ui-bind** attribute, and performs two-way data binding with the informed model object.
 
-### **Observers (****BaseObservable)
+### **Observers (BaseObservable)**
 
-#### addObverser(component)**
+#### **addObverser(component)**
 
 Adds an object (observer) that can listen to **BaseObservable** notifications.
 
