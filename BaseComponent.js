@@ -76,6 +76,7 @@ export default class BaseComponent extends BaseObservable {
 
     /**
      * Searches in all DOM elements inside the informed element having the **ui-action** attribute, and arms the actions accordingly.
+     * If the informed element itself has the attribute too, it gets its action armed as well.
      * @param {any} element
      */
     setupActionsIn(element) {
@@ -84,6 +85,12 @@ export default class BaseComponent extends BaseObservable {
         }
 
         let elements = element.querySelectorAll('[ui-action]');
+        elements = Array.from(elements);
+
+        //includes the initial element if it has too the ui-action attribute
+        if (element.getAttribute('ui-action')){
+            elements.push(element);
+        }
 
         for (const el of elements) {
 
