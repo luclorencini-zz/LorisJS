@@ -83,7 +83,7 @@ export default class RenderExampleComponent extends BaseComponent {
     constructor() {
         super("render-example"); //loads 'this.elem' with the div element
         
-        let html = `<div>Creating content with LorisJS<\div>`;
+        let html = `<div>Creating content with LorisJS</div>`;
         this.render(html);  //writes this html string inside 'this.elem' (this case, the <section> tag)
     }
 }
@@ -193,7 +193,7 @@ export default class BindExampleComponent extends BaseComponent {
     constructor() {
         super("bind-example");   //loads 'this.elem' with the div element
         this.model = { name: ''};  //creates an object that will hold the data
-        this.bindModel(model);  //bind the object's fields with html tags with 'ui-bind'
+        this.bindModel(model);  //bind the object's fields with html tags that have 'ui-bind' set
     }
 }
 
