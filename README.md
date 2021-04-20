@@ -30,10 +30,9 @@ Next, you create a class to hold all the component’s logic. A component class 
         new MyFirstComponent();
     </script>
     </head>
-    <body>
-	    <div ui-component="my-first">			        
-        <div>
-    </body>
+        <body>
+            <div ui-component="my-first"><div>
+        </body>
 </html>
 ```
 
@@ -43,7 +42,7 @@ import BaseComponent from "/lorisJS/BaseComponent.js";
 
 export default class MyFirstComponent extends BaseComponent {
 
-constructor() {
+    constructor() {
         super("my-first");  //loads 'this.elem' with the div element marked as ui-component="my-first"
     }
 }
@@ -62,15 +61,15 @@ Although there are several different ways of creating dynamic html, EcmaScript 6
 ```html
 <html>
     <head>
-    <script type="module">
-        import RenderExampleComponent from "/yourapp/RenderExampleComponent.js";
-        new RenderExampleComponent();
-    </script>
+        <script type="module">
+            import RenderExampleComponent from "/yourapp/RenderExampleComponent.js";
+            new RenderExampleComponent();
+        </script>
     </head>
     <body>
-		<section ui-component="render-example">
-        	[html will go here]
-		<section>
+        <section ui-component="render-example">
+            [html will go here]
+        <section>
     </body>
 </html>
 ```
@@ -81,12 +80,12 @@ import BaseComponent from "/lorisJS/BaseComponent.js";
 
 export default class RenderExampleComponent extends BaseComponent {
 
-	constructor() {
+    constructor() {
         super("render-example"); //loads 'this.elem' with the div element
         
         let html = `<div>Creating content with LorisJS<\div>`;
-		this.render(html);  //writes this html string inside 'this.elem' (this case, the <section> tag)
-    }   
+        this.render(html);  //writes this html string inside 'this.elem' (this case, the <section> tag)
+    }
 }
 
 ```
@@ -111,15 +110,15 @@ event: is any valid javascript string event, like click, change, mouseover, and 
 ```html
 <html>
     <head>
-    <script type="module">
-        import ActionExampleComponent from "/yourapp/ActionExampleComponent.js";
-        new ActionExampleComponent();
-    </script>
+        <script type="module">
+            import ActionExampleComponent from "/yourapp/ActionExampleComponent.js";
+            new ActionExampleComponent();
+        </script>
     </head>
     <body>
-	    <div ui-component="action-example">
-			<button type="button" ui-action="click=refreshDate()">Refresh</button>
-			<div id="date-holder">[new date goes here]</div>
+        <div ui-component="action-example">
+            <button type="button" ui-action="click=refreshDate()">Refresh</button>
+            <div id="date-holder">[new date goes here]</div>
         <div>
     </body>
 </html>
@@ -131,16 +130,16 @@ import BaseComponent from "/lorisJS/BaseComponent.js";
 
 export default class ActionExampleComponent extends BaseComponent {
 
-	constructor() {
+    constructor() {
         super("action-example");   //loads 'this.elem' with the div element
         this.setupActions();  //arms 'ui-action' in button to call the component method 'refreshDate()'
     }
     
     //will call this on click
     refreshDate() {
-    	let newDateStr = new Date().toLocaleDateString();  //gets current date
-    	let holder = document.querySelector('#date-holder');  //gets an element with vanilla JS
-    	this.renderIn(holder, newDateStr);  //renders the date inside the element we want
+        let newDateStr = new Date().toLocaleDateString();  //gets current date
+        let holder = document.querySelector('#date-holder');  //gets an element with vanilla JS
+        this.renderIn(holder, newDateStr);  //renders the date inside the element we want
     }
 }
 
@@ -171,18 +170,16 @@ In the example below, when you type a letter, it will automatically appears insi
 ```html
 <html>
     <head>
-    <script type="module">
-        import BindExampleComponent from "/yourapp/BindExampleComponent.js";
-        new BindExampleComponent();
-    </script>
+        <script type="module">
+            import BindExampleComponent from "/yourapp/BindExampleComponent.js";
+            new BindExampleComponent();
+        </script>
     </head>
     <body>
-	    <div ui-component="bind-example">
-			<div>
-	            <input type="text" placeholder="Enter your name" ui-bind="name" />
-            </div>
+        <div ui-component="bind-example">
+            <input type="text" placeholder="Enter your name" ui-bind="name" />
             <div>Hello, <span ui-bind="name">[name will be shown here]</span></div>
-		<div>
+        <div>
     </body>
 </html>
 ```
@@ -193,7 +190,7 @@ import BaseComponent from "/lorisJS/BaseComponent.js";
 
 export default class BindExampleComponent extends BaseComponent {
 
-constructor() {
+    constructor() {
         super("bind-example");   //loads 'this.elem' with the div element
         this.model = { name: ''};  //creates an object that will hold the data
         this.bindModel(model);  //bind the object's fields with html tags with 'ui-bind'
