@@ -15,13 +15,43 @@ Components generally have three responsibilities (but not mandatory):
 
 We’re gonna cover these topics later.
 
+
 ### **Components and the ui-component attribute**
 
 In LorisJS, you define a component by marking a html tag with the special attribute **ui-component**. By doing that, everything inside that tag is within the scope of the component.
 
 Next, you create a class to hold all the component’s logic. A component class must inherit **BaseComponent**. You define the component name on constructor, by calling super(). This name must match the value provided in the **ui-component** attribute.
 
+```html
+<html>
+    <head>
+    <script type="module">
+        import MyFirstComponent from "/yourapp/MyFirstComponent.js";
+        new MyFirstComponent();
+    </script>
+    </head>
+    <body>
+	    <div ui-component="my-first">			        
+        <div>
+    </body>
+</html>
+```
+
+```javascript
+
+import BaseComponent from "/lorisJS/BaseComponent.js";
+
+export default class MyFirstComponent extends BaseComponent {
+
+constructor() {
+        super("my-first");  //loads 'this.elem' with the div element marked as ui-component="my-first"
+    }
+}
+
+```
+
 To create a component, you just need to instantiate it (using the new keyword). The constructor then searches, in the entire document, for a html tag whose **ui-component** value matches the name provided in the constructor’s component. It all goes down to a plain querySelector on it, so the first found element is stored in component’s **this.elem** property. All other methods we’re gonna discuss here access and use this property somehow. This is also very handy for the developer, since he has direct access to this html element and can use any javascript operation on it, if needed.
+
 
 ### **Rendering**
 
@@ -29,18 +59,92 @@ One key feature of creating pages is the ability to create dynamic html content 
 
 Although there are several different ways of creating dynamic html, EcmaScript 6 introduces new and powerful features to help this task: **template literals** in conjunction with **map** and **join** functions. Please check out this [excellent video](https://youtu.be/DG4obitDvUA) showing how to use them to create dynamic html.
 
+```html
+<html>
+    <head>
+    <script type="module">
+        import RenderExampleComponent from "/yourapp/RenderExampleComponent.js";
+        new RenderExampleComponent();
+    </script>
+    </head>
+    <body>
+		<section ui-component="render-example">
+        	[html will go here]
+		<section>
+    </body>
+</html>
+```
+
+```javascript
+
+import BaseComponent from "/lorisJS/BaseComponent.js";
+
+export default class RenderExampleComponent extends BaseComponent {
+
+	constructor() {
+        super("render-example"); //loads 'this.elem' with the div element
+        
+        let html = `<div>Creating content with LorisJS<\div>`;
+		this.render(html);  //writes this html string inside 'this.elem' (this case, the <section> tag)
+    }   
+}
+
+```
+
 Please note that, when you use **render**, you are actually replacing part of the DOM with new elements. This means that existing data binding and action handling on these previous elements will be lost, and you're gonna have to do it again on the new ones. It's very common to call **bind** and **setupActions** right after **render** to reapply data binding and action handling if your component requires one of them.
 
 By default, **render** acts upon the **this.elem** element. However, if you need more fine-grained control over where the render should happen in, consider using the **renderIn** method. Besides the html string, **renderIn** expects an element where the rendering will take place.
+
 
 ### **Actions and** **ui-action**
 
 Actions are an approach to deal with event handling without its boilerplate code. In LorisJS, you can set up an action to any html element by using the **ui-action** attribute.
 
 Syntax:
-**ui-action=”event=method()”**
+```html
+ui-action=”event=method()”
+```
 
 event: is any valid javascript string event, like click, change, mouseover, and so onmethod(): is a component method, created by you.
+
+
+```html
+<html>
+    <head>
+    <script type="module">
+        import ActionExampleComponent from "/yourapp/ActionExampleComponent.js";
+        new ActionExampleComponent();
+    </script>
+    </head>
+    <body>
+	    <div ui-component="action-example">
+			<button type="button" ui-action="click=refreshDate()">Refresh</button>
+			<div id="date-holder">[new date goes here]</div>
+        <div>
+    </body>
+</html>
+```
+
+```javascript
+
+import BaseComponent from "/lorisJS/BaseComponent.js";
+
+export default class ActionExampleComponent extends BaseComponent {
+
+	constructor() {
+        super("action-example");   //loads 'this.elem' with the div element
+        this.setupActions();  //arms 'ui-action' in button to call the component method 'refreshDate()'
+    }
+    
+    //will call this on click
+    refreshDate() {
+    	let newDateStr = new Date().toLocaleDateString();  //gets current date
+    	let holder = document.querySelector('#date-holder');  //gets an element with vanilla JS
+    	this.renderIn(holder, newDateStr);  //renders the date inside the element we want
+    }
+}
+
+```
 
 Action work is pretty straightforward: it simply creates a javascript event listener using the event you informed, and calls the components’ method by calling **eval** function. Since it’s a plain vanilla eval in the end, the following calls work:
 
@@ -57,13 +161,52 @@ ui-action=”change=showPanel(e)”
 
 By default, **setupActions** acts upon the **this.elem** element. However, if you need more fine-grained control over where to look for actions to set up, consider using the **setupActionsIn** method. This complementary method expects an element where the action setup will look for.
 
+
 ### **Data Binding and ui-model**
 
 The biggest feature in LorisJs is the **two-day data binding**. That's the ability to bind properties of a plain object to html components like text boxes and drop-downs. When bound, any change you do in code in an object's property value reflects immediately on screen, refreshing the bound html field. And, at any change the user performs on screen, the bound object property gets refreshed automatically (hence the term "two-way data binding").
 
+In the example below, when you type a letter, it will automatically appears inside the ```<span>``` element. No further events or actions required.
+
+```html
+<html>
+    <head>
+    <script type="module">
+        import BindExampleComponent from "/yourapp/BindExampleComponent.js";
+        new BindExampleComponent();
+    </script>
+    </head>
+    <body>
+	    <div ui-component="bind-example">
+			<div>
+	            <input type="text" placeholder="Enter your name" ui-bind="name" />
+            </div>
+            <div>Hello, <span ui-bind="name">[name will be shown here]</span></div>
+		<div>
+    </body>
+</html>
+```
+
+```javascript
+
+import BaseComponent from "/lorisJS/BaseComponent.js";
+
+export default class BindExampleComponent extends BaseComponent {
+
+constructor() {
+        super("bind-example");   //loads 'this.elem' with the div element
+        this.model = { name: ''};  //creates an object that will hold the data
+        this.bindModel(model);  //bind the object's fields with html tags with 'ui-bind'
+    }
+}
+
+```
+
 [to-do]
 
 By default, **bindModel** acts upon the **this.elem** element. However, if you need more fine-grained control over where to look for fields to bind, consider using the **bindModelIn** method. This complementary method expects an element where the binding will take place.
+
+
 
 ### **Component Granularity**
 
