@@ -25,14 +25,14 @@ Next, you create a class to hold all the component’s logic. A component class 
 ```html
 <html>
     <head>
-    <script type="module">
-        import MyFirstComponent from "/yourapp/MyFirstComponent.js";
-        new MyFirstComponent();
-    </script>
+        <script type="module">
+            import MyFirstComponent from "/yourapp/MyFirstComponent.js";
+            new MyFirstComponent();
+        </script>
     </head>
-        <body>
-            <div ui-component="my-first"><div>
-        </body>
+    <body>
+        <div ui-component="my-first"><div>
+    </body>
 </html>
 ```
 
